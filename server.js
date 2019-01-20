@@ -5,6 +5,9 @@
 var express = require('express');
 var app = express();
 
+// If true, the client’s IP address is understood as the left-most entry in the X-Forwarded-* header.
+app.set('trust proxy', true)
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
@@ -19,9 +22,14 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+// API endpoint... 
+app.get("/api/whoami", function (req, res) {
+  res.json({
+              ipaddress: req.ip,
+              language : req.header('accept-language'),
+              software : req.header('user-agent')
+           
+           });
 });
 
 
